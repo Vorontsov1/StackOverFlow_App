@@ -1,30 +1,57 @@
+import { useState, useEffect, useLayoutEffect } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet } from 'react-native';
+import { Entypo } from "@expo/vector-icons";
+import {Link} from "expo-router"
 
 
-const QuestionListItem = ({question}) => {
+
+
+
+
+
+const QuestionListItem = ({ question, search }) => {
+
+  const [searchTerm, setSearchTerm] = useState("");    
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        onChangeText: (event) => setSearchTerm(event.nativeEvent.text),
+        onBlur: search,
+      },
+    });
+  }, [navigation, searchTerm, setSearchTerm]);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.stats}>
-        {question.score} votes • {question.answer_count} answers •{" "}
-        {question.view_count} views
-      </Text>
-      <Text style={styles.title}>{question.title}</Text>
-      <Text style={styles.body} numberOfLines={2}>
-        {question.body_markdown}
-      </Text>
-      <View style={styles.tags}>
-        {question.tags.map((tag) => (
-          <Text style={styles.tag} key={tag}>
-            {tag}
-          </Text>
-        ))}
-        <Text style={styles.time}>
-          asked {new Date(question.creation_date * 1000).toDateString()}
+    <Link href={`/${question.id}`}>
+      <View style={styles.container}>
+        <Text style={styles.stats}>
+          {question.score} votes •{" "}
+          {question.is_answered && (
+            <Entypo name="check" size={12} color="limegreen" />
+          )}
+          {question.answer_count} answers • {question.view_count} views
         </Text>
+        <Text style={styles.title}>{question.title}</Text>
+        <Text style={styles.body} numberOfLines={2}>
+          {question.body_markdown}
+        </Text>
+        <View style={styles.tags}>
+          {question.tags.map((tag) => (
+            <Text style={styles.tag} key={tag}>
+              {tag}
+            </Text>
+          ))}
+          <Text style={styles.time}>
+            asked {new Date(question.creation_date * 1000).toDateString()}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Link>
   );
-}
+};
 
 
 const styles = StyleSheet.create({
