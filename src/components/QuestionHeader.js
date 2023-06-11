@@ -1,12 +1,10 @@
-import { useState, useEffect, useLayoutEffect } from "react";
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet } from 'react-native';
+// import { useState, useEffect, useLayoutEffect } from "react";
+// import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { Entypo } from "@expo/vector-icons";
 import {Link} from "expo-router"
-
-
-
-
+import {decode} from "html-entities"
+import Markdown from 'react-native-markdown-displayer';
 
 
 
@@ -27,7 +25,7 @@ const QuestionHeader = ({ question, search }) => {
   return (
     <Link href={`/${question.question_id}`}>
       <View style={styles.container}>
-        <Text style={styles.title}>{question.title}</Text>
+        <Text style={styles.title}>{decode(question.title)}</Text>
         <Text style={styles.stats}>
           {question.score} votes •{" "}
           {question.is_answered && (
@@ -38,9 +36,7 @@ const QuestionHeader = ({ question, search }) => {
 
         <View style={styles.separator} />
 
-        <Text style={styles.body} >
-          {question.body_markdown}
-        </Text>
+        <Markdown>{decode(question.body_markdown)}</Markdown>
         <View style={styles.tags}>
           {question.tags.map((tag) => (
             <Text style={styles.tag} key={tag}>
