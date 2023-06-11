@@ -10,7 +10,7 @@ import {Link} from "expo-router"
 
 
 
-const QuestionListItem = ({ question, search }) => {
+const QuestionHeader = ({ question, search }) => {
 
   // const [searchTerm, setSearchTerm] = useState("");    
   // const navigation = useNavigation();
@@ -27,6 +27,7 @@ const QuestionListItem = ({ question, search }) => {
   return (
     <Link href={`/${question.question_id}`}>
       <View style={styles.container}>
+        <Text style={styles.title}>{question.title}</Text>
         <Text style={styles.stats}>
           {question.score} votes •{" "}
           {question.is_answered && (
@@ -34,8 +35,10 @@ const QuestionListItem = ({ question, search }) => {
           )}
           {question.answer_count} answers • {question.view_count} views
         </Text>
-        <Text style={styles.title}>{question.title}</Text>
-        <Text style={styles.body} numberOfLines={2}>
+
+        <View style={styles.separator} />
+
+        <Text style={styles.body} >
           {question.body_markdown}
         </Text>
         <View style={styles.tags}>
@@ -65,15 +68,13 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 5,
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#0063bf",
+    fontSize: 20,
+    fontWeight: "500",
+    lineHeight: 28,
+    color: "#3b4045",
     marginVertical: 5,
   },
-  body: {
-    fontSize: 13,
-    color: "dimgray",
-  },
+  body: {},
   tags: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -94,6 +95,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "dimgray",
   },
+  separator: {
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgray",
+    marginVertical: 10,
+
+  },
 });
 
-export default QuestionListItem;
+export default QuestionHeader;
